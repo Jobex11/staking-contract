@@ -17,7 +17,9 @@ const App = () => {
   useEffect(() => {
     const fetchWallets = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/wallets");
+        const response = await axios.get(
+          "https://stakingcontract-8441.onrender.com/api/wallets"
+        );
         setWallets(response.data);
       } catch (error) {
         console.error("Error fetching wallets:", error);
