@@ -1,6 +1,6 @@
+//   "https://stakingcontract-8441.onrender.com/api/wallets"
 import { useState, useEffect } from "react";
-import Web3 from "web3";
-import axios from "axios";
+import Web3 from "web3";ssss
 
 import stakingABI from "./stakingABI";
 import tokenABI from "./tokenABI";
@@ -11,26 +11,8 @@ const stakingAddress = "0x7aFDCeD74908FA3AD2B41177827EF46Be66FeE0f";
 const App = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [amount, setAmount] = useState("");
-  // wallets start
-  const [wallets, setWallets] = useState([]);
-
-  useEffect(() => {
-    const fetchWallets = async () => {
-      try {
-        const response = await axios.get(
-          "https://stakingcontract-8441.onrender.com/api/wallets"
-        );
-        setWallets(response.data);
-      } catch (error) {
-        console.error("Error fetching wallets:", error);
-      }
-    };
-
-    fetchWallets();
-  }, []);
-
-  //wallet ends
-
+  //start
+  //ends
   const connectWallet = async () => {
     if (window.ethereum) {
       try {
@@ -51,7 +33,7 @@ const App = () => {
       const web3 = new Web3(window.ethereum);
       web3.eth.getAccounts().then((accounts) => {
         if (accounts.length > 0) {
-          setWalletAddress(accounts[0]); // Automatically set to the connected address
+          setWalletAddress(accounts[0]);
         }
       });
 
@@ -93,15 +75,13 @@ const App = () => {
       const stakingContract = new web3.eth.Contract(stakingABI, stakingAddress);
       const weiAmount = web3.utils.toWei(amount, "ether");
 
-      // Estimate the gas needed
       const estimatedGas = await stakingContract.methods
         .stake(weiAmount)
         .estimateGas({ from: walletAddress });
 
-      // Send transaction with increased gas limit
       const result = await stakingContract.methods.stake(weiAmount).send({
         from: walletAddress,
-        gas: Math.floor(estimatedGas * 4), // Increase by 20% to ensure sufficient gas
+        gas: Math.floor(estimatedGas * 4),
       });
       console.log("Stake successful:", result);
     } catch (error) {
@@ -173,18 +153,7 @@ const App = () => {
         <div>
           <button onClick={withdrawTokens}>Withdraw</button>
         </div>
-      </div>
-
-      <div>
-        <h1>Whitelisted wallets for RB stake</h1>
-        <ul>
-          {wallets.map((wallet) => (
-            <li key={wallet._id}>
-              {wallet.walletAddress} - {wallet.category}
-            </li>
-          ))}
-        </ul>
-      </div>
+      </div> 
     </div>
   );
 };

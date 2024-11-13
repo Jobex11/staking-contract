@@ -1,3 +1,4 @@
 projectDocs
 .env
 node_modules
+~$whitlistedAccount.xlsx
